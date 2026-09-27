@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مطعم البيت — منيو أونلاين (نموذج TrioMind)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fbf7f2;--card:#fff;--text:#2b1d14;--muted:#8a7667;--line:#efe4d8;--brand:#d9480f;--brand2:#f59f00;--ok:#2f9e44}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Cairo,system-ui,sans-serif;background:var(--bg);color:var(--text);padding-bottom:100px}
+button{font-family:inherit;cursor:pointer}
+.demo-bar{background:#0b0d17;color:#cfd4e3;font-size:.85rem;text-align:center;padding:8px 12px}
+.demo-bar b{color:#fff}.demo-bar a{color:#22d3ee;font-weight:700;margin-inline-start:6px}
+.hero{background:linear-gradient(135deg,#7c2d12,#d9480f 55%,#f59f00);color:#fff;padding:34px 18px 60px;text-align:center;position:relative;overflow:hidden}
+.hero::after{content:"🍢 🥙 🍗 🥗 🍰";position:absolute;inset:auto 0 -6px;font-size:2.4rem;opacity:.18;letter-spacing:18px}
+.logo{width:74px;height:74px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:2.2rem;margin:0 auto 12px;box-shadow:0 8px 24px rgba(0,0,0,.2)}
+.hero h1{font-size:1.9rem;font-weight:800}
+.hero p{opacity:.9;margin-top:4px}
+.meta{display:flex;justify-content:center;gap:10px;margin-top:14px;flex-wrap:wrap}
+.meta span{background:rgba(255,255,255,.18);padding:4px 12px;border-radius:99px;font-size:.85rem}
+.wrap{max-width:860px;margin:0 auto;padding:0 14px}
+.tabs{position:sticky;top:0;z-index:5;background:var(--bg);padding:14px 0 10px;margin-top:-28px}
+.tabs .wrap{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+.tabs button{flex:none;border:1px solid var(--line);background:var(--card);padding:9px 18px;border-radius:99px;font-size:.95rem;font-weight:600;color:var(--muted);box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.tabs button.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+h2{font-size:1.25rem;margin:22px 0 12px}
+.items{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.item{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px;display:flex;gap:12px;align-items:center}
+.pic{flex:none;width:78px;height:78px;border-radius:14px;display:grid;place-items:center;font-size:2.4rem;background:linear-gradient(135deg,#fff4e6,#ffe8cc)}
+.item h3{font-size:1rem}
+.item p{font-size:.8rem;color:var(--muted);line-height:1.5;margin:2px 0 6px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.price{font-weight:800;color:var(--brand)}
+.add{border:0;background:var(--brand);color:#fff;width:34px;height:34px;border-radius:10px;font-size:1.3rem;line-height:1}
+.qty{display:flex;align-items:center;gap:8px;font-weight:700}
+.qty button{border:1px solid var(--line);background:#fff;width:30px;height:30px;border-radius:9px;font-size:1.1rem}
+.badge{font-size:.7rem;background:#fff3bf;color:#9c6500;padding:1px 8px;border-radius:99px;margin-inline-start:6px;vertical-align:middle}
+.cartbar{position:fixed;bottom:14px;inset-inline:14px;max-width:832px;margin:0 auto;background:var(--brand);color:#fff;border:0;border-radius:16px;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;font-size:1.05rem;font-weight:700;box-shadow:0 12px 30px rgba(217,72,15,.4);transform:translateY(140%);transition:transform .3s}
+.cartbar.show{transform:none}
+.cartbar i{background:rgba(255,255,255,.22);font-style:normal;padding:2px 10px;border-radius:8px;margin-inline-end:8px}
+.modal{position:fixed;inset:0;background:rgba(20,10,5,.5);display:none;align-items:flex-end;justify-content:center;z-index:20}
+.modal.open{display:flex}
+.sheet{background:#fff;width:100%;max-width:560px;border-radius:24px 24px 0 0;padding:22px;max-height:88vh;overflow:auto}
+.sheet h3{font-size:1.3rem;margin-bottom:12px;display:flex;justify-content:space-between}
+.sheet h3 button{border:0;background:none;font-size:1.4rem;color:var(--muted)}
+.line{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px dashed var(--line)}
+.total{display:flex;justify-content:space-between;font-weight:800;font-size:1.15rem;margin:14px 0}
+label{display:block;font-size:.85rem;color:var(--muted);margin:10px 0 4px}
+input,textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:11px 12px;font-family:inherit;font-size:1rem;background:#fffdfa}
+textarea{min-height:64px}
+.go{width:100%;border:0;background:#25d366;color:#fff;font-weight:800;font-size:1.05rem;padding:14px;border-radius:14px;margin-top:16px}
+.done{text-align:center;padding:10px 0}
+.done .big{font-size:3.4rem}
+.done pre{text-align:right;background:#f4fbf6;border:1px solid #d3f0db;border-radius:12px;padding:12px;font-family:inherit;white-space:pre-wrap;margin:14px 0;font-size:.9rem}
+footer{text-align:center;color:var(--muted);font-size:.85rem;margin-top:30px}
+@media(max-width:640px){.items{grid-template-columns:1fr}.hero h1{font-size:1.6rem}}
+</style>
+</head>
+<body>
+<div class="demo-bar">🔹 نسخة تجريبية من <b>TrioMind</b> — بدك منيو متله لمطعمك؟<a href="index.html#contact">اطلب الآن</a></div>
+
+<header class="hero">
+  <div class="logo">🍽️</div>
+  <h1>مطعم البيت</h1>
+  <p>أكل بيتي على أصوله.. من مطبخنا لبابك</p>
+  <div class="meta"><span>🕒 يومياً 12 ظهراً – 12 ليلاً</span><span>🛵 توصيل 30–45 دقيقة</span><span>⭐ 4.8</span></div>
+</header>
+
+<nav class="tabs"><div class="wrap" id="tabs"></div></nav>
+<main class="wrap" id="menu"></main>
+<footer class="wrap">صُمّم هذا النموذج بواسطة TrioMind</footer>
+
+<button class="cartbar" id="cartbar"><span><i id="cnt">0</i>عرض الطلب</span><span id="sum">0 ج.م</span></button>
+
+<div class="modal" id="modal"><div class="sheet" id="sheet"></div></div>
+
+<script src="currency.js"></script>
+<script>
+const MENU = [
+  {cat:"مشويات", items:[
+    {id:1,e:"🍢",n:"مشاوي مشكّلة",d:"كباب، كفتة، شيش طاووق مع خبز وثومية",p:320,hot:1},
+    {id:2,e:"🍗",n:"فرخة مشوية",d:"نص فرخة متبّلة على الفحم مع رز",p:190},
+    {id:3,e:"🥩",n:"ريش ضاني",d:"ريش مشوية مع سلطة وبطاطس",p:380}]},
+  {cat:"سندويشات", items:[
+    {id:4,e:"🌯",n:"شاورما فراخ",d:"خبز صاج، ثومية، مخلل وبطاطس",p:85,hot:1},
+    {id:5,e:"🥙",n:"شاورما لحمة",d:"طحينة، بقدونس، بصل وطماطم",p:110},
+    {id:6,e:"🍔",n:"برجر البيت",d:"لحم بقري، شيدر، صوص خاص",p:135}]},
+  {cat:"أطباق رئيسية", items:[
+    {id:7,e:"🍛",n:"ملوخية بالفراخ",d:"مع رز أبيض وربع فرخة",p:165},
+    {id:8,e:"🫕",n:"محشي مشكّل",d:"كرنب، ورق عنب، كوسة وفلفل",p:140},
+    {id:9,e:"🍝",n:"مكرونة بشاميل",d:"صينية فردية ولحمة مفرومة",p:120}]},
+  {cat:"سلطات ومقبلات", items:[
+    {id:10,e:"🥗",n:"فتوش",d:"خضار طازة، خبز محمّص ودبس رمان",p:60},
+    {id:11,e:"🧆",n:"طعمية (6 قطع)",d:"مع طحينة",p:35},
+    {id:12,e:"🍟",n:"بطاطس مقلية",d:"مقرمشة مع كاتشب",p:40}]},
+  {cat:"حلويات ومشروبات", items:[
+    {id:13,e:"🍰",n:"أم علي",d:"بالمكسرات والقشطة",p:70},
+    {id:14,e:"🍮",n:"رز باللبن",d:"بالقرفة والمكسرات",p:45},
+    {id:15,e:"🍹",n:"عصير مانجو فريش",d:"كوب كبير",p:50},
+    {id:16,e:"🥤",n:"مشروب غازي",d:"كانز",p:20}]}
+];
+const all = MENU.flatMap(c=>c.items);
+const cart = {};
+const $ = s => document.querySelector(s);
+const money = n => CUR.money(n), fmt = v => CUR.fmt(v), cv = n => CUR.conv(n);
+
+$("#tabs").innerHTML = MENU.map((c,i)=>`<button class="${i?"":"on"}" data-i="${i}">${c.cat}</button>`).join("");
+$("#tabs").onclick = e => { const b=e.target.closest("button"); if(!b) return;
+  document.querySelectorAll("#tabs button").forEach(x=>x.classList.toggle("on",x===b));
+  document.getElementById("c"+b.dataset.i).scrollIntoView({behavior:"smooth",block:"start"}); };
+
+function render(){
+  $("#menu").innerHTML = MENU.map((c,i)=>`<section id="c${i}" style="scroll-margin-top:70px"><h2>${c.cat}</h2><div class="items">${
+    c.items.map(it=>`<div class="item"><div class="pic">${it.e}</div><div style="flex:1">
+      <h3>${it.n}${it.hot?'<span class="badge">الأكثر طلباً</span>':''}</h3><p>${it.d}</p>
+      <div class="row"><span class="price">${money(it.p)}</span>${
+        cart[it.id]?`<span class="qty"><button data-a="-" data-id="${it.id}">−</button>${cart[it.id]}<button data-a="+" data-id="${it.id}">+</button></span>`
+        :`<button class="add" data-a="+" data-id="${it.id}">+</button>`}</div></div></div>`).join("")
+  }</div></section>`).join("");
+  const n = Object.values(cart).reduce((a,b)=>a+b,0);
+  $("#cnt").textContent = n; $("#sum").textContent = fmt(total());
+  $("#cartbar").classList.toggle("show", n>0);
+}
+const total = () => Object.entries(cart).reduce((s,[id,q])=>s+cv(all.find(x=>x.id==id).p)*q,0);
+function change(id,a){ cart[id]=(cart[id]||0)+(a==="+"?1:-1); if(cart[id]<=0) delete cart[id]; render(); if($("#modal").classList.contains("open")) openCart(); }
+document.body.addEventListener("click", e=>{ const b=e.target.closest("[data-a]"); if(b) change(b.dataset.id,b.dataset.a); });
+
+const DELIVERY = 25;
+function openCart(){
+  if(!Object.keys(cart).length){ closeM(); return; }
+  $("#sheet").innerHTML = `<h3>طلبك <button onclick="closeM()">✕</button></h3>${
+    Object.entries(cart).map(([id,q])=>{const it=all.find(x=>x.id==id);return `<div class="line"><span>${it.e} ${it.n}</span>
+    <span class="qty"><button data-a="-" data-id="${id}">−</button>${q}<button data-a="+" data-id="${id}">+</button></span><b>${fmt(cv(it.p)*q)}</b></div>`}).join("")
+  }<div class="line"><span>🛵 التوصيل</span><b>${money(DELIVERY)}</b></div>
+  <div class="total"><span>الإجمالي</span><span>${fmt(total()+cv(DELIVERY))}</span></div>
+  <label>الاسم</label><input id="nm" placeholder="اسمك">
+  <label>رقم الموبايل</label><input id="ph" placeholder="01xxxxxxxxx" dir="ltr" style="text-align:right">
+  <label>العنوان</label><textarea id="ad" placeholder="المنطقة، الشارع، رقم العمارة والشقة"></textarea>
+  <button class="go" onclick="send()">إرسال الطلب على واتساب</button>`;
+  $("#modal").classList.add("open");
+}
+function send(){
+  const nm=$("#nm").value.trim()||"زبون", ad=$("#ad").value.trim()||"—", ph=$("#ph").value.trim()||"—";
+  const lines = Object.entries(cart).map(([id,q])=>{const it=all.find(x=>x.id==id);return `• ${it.n} × ${q} = ${fmt(cv(it.p)*q)}`}).join("\n");
+  const msg = `طلب جديد من ${nm}\nالموبايل: ${ph}\nالعنوان: ${ad}\n\n${lines}\nالتوصيل: ${money(DELIVERY)}\nالإجمالي: ${fmt(total()+cv(DELIVERY))}`;
+  $("#sheet").innerHTML = `<div class="done"><div class="big">✅</div><h3 style="justify-content:center">تم تجهيز طلبك!</h3>
+  <p style="color:var(--muted)">في النسخة الحقيقية، هالرسالة بتوصل مباشرة على واتساب المطعم:</p><pre>${msg}</pre>
+  <button class="go" style="background:var(--brand)" onclick="reset()">طلب جديد</button>
+  <a href="index.html#contact" style="display:block;margin-top:12px;color:var(--brand);font-weight:700">بدك منيو متل هيدا لمطعمك؟ ←</a></div>`;
+}
+function reset(){ for(const k in cart) delete cart[k]; closeM(); render(); }
+function closeM(){ $("#modal").classList.remove("open"); }
+$("#cartbar").onclick = openCart;
+$("#modal").onclick = e => { if(e.target.id==="modal") closeM(); };
+CUR.onChange(()=>{ render(); if($("#modal").classList.contains("open") && $("#nm")) openCart(); });
+render();
+</script>
+</body>
+</html>
